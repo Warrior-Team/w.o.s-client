@@ -12,6 +12,7 @@ import {getSystemsStats} from '../../reducers/stats/stats.reducer';
 import {getSystems} from '../../reducers/systems/systems.reducer';
 import {PushNotificationsService} from '../../services/push-notifications/push-notifications.service';
 import {RealitiesManagerService} from '../../services/realities-manager/realities-manager.service';
+import {SocketsManagerService} from '../../services/sockets-manager/sockets-manager.service';
 import {SystemsManagerService} from '../../services/systems-manager/systems-manager.service';
 
 @Component({
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   constructor(private pushNotificationsService: PushNotificationsService,
               private systemsManagerService: SystemsManagerService,
               private realitiesManagerService: RealitiesManagerService,
+              private socketsManagerService: SocketsManagerService,
               private store: Store<State>) {
     this.realitiesForm = new FormControl();
   }
@@ -63,7 +65,7 @@ export class AppComponent implements OnInit {
     const data: any[] = [];
     data.push({
       title: cardTitle,
-      alertContent: body
+      alertContent: body,
     });
     this.pushNotificationsService.generateNotification(data);
   }
@@ -72,5 +74,6 @@ export class AppComponent implements OnInit {
     this.pushNotificationsService.requestPermission().then();
     this.systemsManagerService.init();
     this.realitiesManagerService.init();
+    this.socketsManagerService.init();
   }
 }

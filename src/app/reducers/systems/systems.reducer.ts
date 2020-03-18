@@ -1,5 +1,5 @@
 import {Action, createReducer, createSelector, on} from '@ngrx/store';
-import {loadSystemsAction, toggleSystemGraphAction} from '../../actions/system.actions';
+import {loadSystemsAction, toggleSystemGraphAction, updateSystemsAction} from '../../actions/system.actions';
 import {System} from '../../models/system';
 import {State} from '../index';
 
@@ -17,6 +17,7 @@ export const initialState: SystemsState = {
 const systemsReducer = createReducer(
   initialState,
   on(loadSystemsAction, loadSystems),
+  on(updateSystemsAction, updateSystems),
   on(toggleSystemGraphAction, toggleSystemGraph)
 );
 
@@ -28,6 +29,26 @@ function loadSystems(state: SystemsState, action): SystemsState {
   return {
     ...state,
     systems: action.systems
+  };
+}
+
+function updateSystems(state: SystemsState, action): SystemsState {
+  const systemsToUpdate: Partial<System>[] = action.systems;
+  const systemsToUpdateMap: Map<number, Partial<System>> = new Map<number, Partial<System>>();
+  for (const sys of systemsToUpdate) {
+    systemsToUpdateMap.set(sys.id, sys);
+  }
+  const systems = state.systems.map(system => {
+    const foundSys = systemsToUpdateMap.get(system.id);
+    if (foundSys) {
+      return Object.assign({}, system, foundSys);
+    } else {
+      return system;
+    }
+  });
+  return {
+    ...state,
+    systems
   };
 }
 

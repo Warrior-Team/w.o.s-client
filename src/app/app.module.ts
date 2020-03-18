@@ -17,13 +17,14 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {ChartsModule} from 'ng2-charts';
 import {environment} from '../environments/environment';
 import {AppComponent} from './components/app/app.component';
+import {MyLineChartComponent} from './components/my-line-chart/my-line-chart.component';
 import {SystemCardComponent} from './components/system-card/system-card.component';
 import {SortPipe} from './pipes/sort/sort.pipe';
 import {metaReducers, reducers} from './reducers';
 import {PushNotificationsService} from './services/push-notifications/push-notifications.service';
 import {RealitiesManagerService} from './services/realities-manager/realities-manager.service';
+import {SocketsManagerService} from './services/sockets-manager/sockets-manager.service';
 import {SystemsManagerService} from './services/systems-manager/systems-manager.service';
-import { MyLineChartComponent } from './components/my-line-chart/my-line-chart.component';
 
 
 @NgModule({
@@ -58,7 +59,7 @@ import { MyLineChartComponent } from './components/my-line-chart/my-line-chart.c
     ReactiveFormsModule,
     ChartsModule
   ],
-  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService],
+  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

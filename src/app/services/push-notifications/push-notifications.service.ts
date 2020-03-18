@@ -14,7 +14,7 @@ export class PushNotificationsService {
   }
 
   async requestPermission(): Promise<void> {
-    let self = this;
+    const self = this;
     if (this.isSupported()) {
       await Notification.requestPermission((status) => {
         return self.permission = status;
@@ -32,7 +32,7 @@ export class PushNotificationsService {
         console.log('The user hasn\'t granted you permission to send push notifications');
         obs.complete();
       }
-      let notify: Notification = new Notification(title, options);
+      const notify: Notification = new Notification(title, options);
       notify.onshow = (e) => {
         return obs.next({
           notification: notify,
@@ -59,32 +59,17 @@ export class PushNotificationsService {
   }
 
   generateNotification(source: Array<any>): void {
-    let self = this;
+    const self = this;
     source.forEach((item) => {
-      let options: NotificationOptions = {
+      const options: NotificationOptions = {
         body: item.alertContent,
-        icon: '../../../assets/images/favicon.ico',
+        icon: item.icon ? item.icon : '../../../assets/images/favicon.ico',
         vibrate: [200, 100, 200, 100, 200, 100, 200],
         dir: 'ltr'
       };
-      let notify = self.create(item.title, options).subscribe();
+      self.create(item.title, options).subscribe();
     });
   }
 }
 
 export declare type Permission = 'denied' | 'granted' | 'default';
-
-export interface PushNotification {
-  body?: string;
-  icon?: string;
-  tag?: string;
-  data?: any;
-  renotify?: boolean;
-  silent?: boolean;
-  sound?: string;
-  noscreen?: boolean;
-  sticky?: boolean;
-  dir?: 'auto' | 'ltr' | 'rtl';
-  lang?: string;
-  vibrate?: number[];
-}
