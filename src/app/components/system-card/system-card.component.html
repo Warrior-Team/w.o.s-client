@@ -9,10 +9,14 @@
     <app-my-line-chart [data]="data" [labels]="labels" [labelGraph]="'duration in ms'"></app-my-line-chart>
   </div>
   <!--    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
-  <mat-card-content>
+  <mat-card-content style="display: flex; flex-direction: column">
    <span>
      {{system.details}}
    </span>
+    <span *ngIf="!system.isAlive">Been down since {{system.lastAlive}}</span>
+    <span> Meaning been down since
+      <span *ngIf="!system.isAlive" style="color:red; font-size: 1.2em"> {{system.lastAlive | dateToPretty}}</span>
+    </span>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button>LIKE</button>

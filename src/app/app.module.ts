@@ -25,6 +25,7 @@ import {PushNotificationsService} from './services/push-notifications/push-notif
 import {RealitiesManagerService} from './services/realities-manager/realities-manager.service';
 import {SocketsManagerService} from './services/sockets-manager/sockets-manager.service';
 import {SystemsManagerService} from './services/systems-manager/systems-manager.service';
+import { DateToPrettyPipe } from './pipes/date-to-pretty/date-to-pretty.pipe';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {SystemsManagerService} from './services/systems-manager/systems-manager.
     AppComponent,
     SystemCardComponent,
     SortPipe,
-    MyLineChartComponent
+    MyLineChartComponent,
+    DateToPrettyPipe
   ],
   imports: [
     BrowserModule,
