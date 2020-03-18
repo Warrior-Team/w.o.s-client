@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class PushNotificationsService {
-  public permission: Permission;
+  permission: Permission;
 
   constructor() {
     this.permission = this.isSupported() ? 'default' : 'denied';

@@ -21,6 +21,7 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
+              "src/speaker.ico",
               "src/assets"
             ],
             "styles": [
