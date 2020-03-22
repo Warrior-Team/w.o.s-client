@@ -1,11 +1,12 @@
 import {LayoutModule} from '@angular/cdk/layout';
 import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -26,6 +27,8 @@ import {RealitiesManagerService} from './services/realities-manager/realities-ma
 import {SocketsManagerService} from './services/sockets-manager/sockets-manager.service';
 import {SystemsManagerService} from './services/systems-manager/systems-manager.service';
 import { DateToPrettyPipe } from './pipes/date-to-pretty/date-to-pretty.pipe';
+import { HeaderComponent } from './components/header/header.component';
+import { CreateSystemComponent } from './components/create-system/create-system.component';
 
 
 @NgModule({
@@ -34,7 +37,9 @@ import { DateToPrettyPipe } from './pipes/date-to-pretty/date-to-pretty.pipe';
     SystemCardComponent,
     SortPipe,
     MyLineChartComponent,
-    DateToPrettyPipe
+    DateToPrettyPipe,
+    HeaderComponent,
+    CreateSystemComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import { DateToPrettyPipe } from './pipes/date-to-pretty/date-to-pretty.pipe';
     MatIconModule,
     MatListModule,
     MatCardModule,
+    MatInputModule,
     StoreModule.forRoot(reducers, {
       metaReducers,
       runtimeChecks: {
@@ -59,7 +65,8 @@ import { DateToPrettyPipe } from './pipes/date-to-pretty/date-to-pretty.pipe';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     ReactiveFormsModule,
-    ChartsModule
+    ChartsModule,
+    FormsModule
   ],
   providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService],
   bootstrap: [AppComponent]

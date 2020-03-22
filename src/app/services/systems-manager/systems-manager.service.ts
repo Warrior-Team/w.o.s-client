@@ -34,5 +34,15 @@ export class SystemsManagerService {
         });
     });
   }
+
+  addSystem(systemToAdd: System, reality: number) {
+    this.httpClient.put('http://localhost:8080/systems', {system: systemToAdd}, {
+      headers: {reality: reality.toString()},
+      withCredentials: false
+    }).subscribe((system: System) => {
+        console.log('Success');
+      }
+    );
+  }
 }
 

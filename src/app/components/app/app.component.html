@@ -1,22 +1,41 @@
 <div class="app-root">
-  <div class="header">
-    <span class="header-title">Wall of Shame</span>
-    <span class="header-second-title">Developed by WarriorTeam</span>
-    <mat-form-field dir="rtl">
-      <mat-label dir="rtl">מציאות</mat-label>
-      <mat-select dir="rtl" [formControl]="realitiesForm" (selectionChange)="realitySelectionChanged($event)">
-        <mat-select-trigger>
-          {{realitiesForm.value?.name}}
-        </mat-select-trigger>
-        <mat-option dir="rtl" *ngFor="let reality of realities | async" [value]="reality">
-          {{reality.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="system-container">
-    <app-system-card *ngFor="let system of (systemWithStats | async) | sort:['system','name']"
-                     [systemWithStat]="system"
-                     (clickEmitter)="notify($event, system.name)"></app-system-card>
-  </div>
+  <app-header>
+    <div realities>
+      <mat-form-field dir="rtl">
+        <mat-label dir="rtl">מציאות</mat-label>
+        <mat-select class="mat-select" dir="rtl"
+                    (selectionChange)="realitySelectionChanged($event)">
+          <mat-option class="mat-option" dir="rtl" *ngFor="let reality of realities | async"
+                      [value]="reality.warriorReality">
+            {{reality.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button side-button mat-icon-button (click)="snav.toggle()" class="mat-icon-button button">
+      <mat-icon class="mat-icon">menu</mat-icon>
+    </button>
+  </app-header>
+  <mat-sidenav-container class="example-sidenav-container row ctr" [hasBackdrop]="true">
+    <mat-sidenav #snav mode="over" [fixedInViewport]="false">
+      <mat-nav-list class="mat-nav-list">
+        <a mat-list-item *ngFor="let nav of fillerNav" (click)="optionClicked(nav)">{{nav}}</a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <div *ngIf="view$ | async; else displayCreate" class="container">
+        <div class="system-container row">
+          <app-system-card *ngFor="let system of (systemWithStats | async) | sort:['system','name']"
+                           [systemWithStat]="system"
+                           (clickEmitter)="notify($event, system.system.name)"></app-system-card>
+        </div>
+      </div>
+      <ng-template #displayCreate>
+        <div class="row ctr">
+          <app-create-system [realities]="realities| async" (sendEmitter)="addSystem($event)"></app-create-system>
+        </div>
+      </ng-template>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

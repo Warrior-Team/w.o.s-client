@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatSelectChange} from '@angular/material/select/select';
 import {select, Store} from '@ngrx/store';
 import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {toggleCreateAction, toggleViewAction} from '../../actions/layout.actions';
 import {changeRealityAction} from '../../actions/realities.actions';
 import {System, SystemStat, SystemWithStat} from '../../models/system';
 import {State} from '../../reducers';
+import {getCreate, getView} from '../../reducers/layout/layout.reducer';
 import {getRealities, getSelectedReality, Reality} from '../../reducers/realities/realities.reducer';
 import {getSystemsStats} from '../../reducers/stats/stats.reducer';
 import {getSystems} from '../../reducers/systems/systems.reducer';
@@ -21,12 +23,19 @@ import {SystemsManagerService} from '../../services/systems-manager/systems-mana
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  @ViewChild('snav') snav;
   systems: Observable<System[]>;
   realities: Observable<Reality[]>;
   selectedReality: string;
   selectedRealityOb: Observable<string>;
   realitiesForm;
   systemWithStats: Observable<SystemWithStat[]>;
+
+  create$: Observable<boolean>;
+  view$: Observable<boolean>;
+
+  displaySystems = true;
+  fillerNav = ['View', 'Create'];
 
   constructor(private pushNotificationsService: PushNotificationsService,
               private systemsManagerService: SystemsManagerService,
@@ -53,12 +62,15 @@ export class AppComponent implements OnInit {
     this.selectedRealityOb = combineLatest([this.realities, selectedRealityOb])
       .pipe(map(([realities, selectedReality]) => {
         const selected = realities.find(reality => reality.warriorReality === selectedReality);
-        return selected ? selected.name : '';
+        return selected ? selected.name : 'ddd';
       }));
+
+    this.create$ = this.store.pipe(select(getCreate));
+    this.view$ = this.store.pipe(select(getView));
   }
 
   realitySelectionChanged({value}: MatSelectChange) {
-    this.store.dispatch(changeRealityAction({selectedReality: value.warriorReality}));
+    this.store.dispatch(changeRealityAction({selectedReality: value}));
   }
 
   notify(body: string, cardTitle: string) {
@@ -68,6 +80,22 @@ export class AppComponent implements OnInit {
       alertContent: body,
     });
     this.pushNotificationsService.generateNotification(data);
+  }
+
+  optionClicked(text: string) {
+    switch (text) {
+      case 'View':
+        this.store.dispatch(toggleViewAction());
+        break;
+      case 'Create':
+        this.store.dispatch(toggleCreateAction());
+        break;
+    }
+    this.snav.toggle();
+  }
+
+  addSystem(event: { system: System, reality: number }) {
+    this.systemsManagerService.addSystem(event.system, event.reality);
   }
 
   private initServices() {
