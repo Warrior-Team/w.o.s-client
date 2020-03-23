@@ -1,5 +1,11 @@
 import {Action, createReducer, createSelector, on} from '@ngrx/store';
-import {loadSystemsAction, toggleSystemGraphAction, updateSystemsAction} from '../../actions/system.actions';
+import {
+  addSystemsAction,
+  loadSystemsAction,
+  removeSystemsAction,
+  toggleSystemGraphAction,
+  updateSystemsAction
+} from '../../actions/system.actions';
 import {System} from '../../models/system';
 import {State} from '../index';
 
@@ -18,6 +24,8 @@ const systemsReducer = createReducer(
   initialState,
   on(loadSystemsAction, loadSystems),
   on(updateSystemsAction, updateSystems),
+  on(addSystemsAction, addSystems),
+  on(removeSystemsAction, removeSystem),
   on(toggleSystemGraphAction, toggleSystemGraph)
 );
 
@@ -29,6 +37,13 @@ function loadSystems(state: SystemsState, action): SystemsState {
   return {
     ...state,
     systems: action.systems
+  };
+}
+
+function addSystems(state: SystemsState, action): SystemsState {
+  return {
+    ...state,
+    systems: [...state.systems, ...action.systems]
   };
 }
 
@@ -49,6 +64,13 @@ function updateSystems(state: SystemsState, action): SystemsState {
   return {
     ...state,
     systems
+  };
+}
+
+function removeSystem(state: SystemsState, action): SystemsState {
+  return {
+    ...state,
+    systems: state.systems.filter(sys => sys.id !== action.systemId)
   };
 }
 

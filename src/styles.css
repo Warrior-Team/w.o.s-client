@@ -13,6 +13,10 @@ body {
   background-color: #ffe3df;
 }
 
+mat-sidenav-content {
+  background-color: #ffe3df;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -26,5 +30,8 @@ body {
 .row.ctr, .col.ctr {
   justify-content: center;
   align-items: center;
-  text-align: center;
+}
+
+.mat-badge-content {
+  pointer-events: all;
 }

@@ -1,43 +1,44 @@
 import {Action, createReducer, createSelector, on} from '@ngrx/store';
-import {toggleCreateAction, toggleViewAction} from '../../actions/layout.actions';
+import {showMainContainerAction, toggleSidenavAction} from '../../actions/layout.actions';
+import {SideNavButtons} from '../../models/enums';
 import {State} from '../index';
 
 
 export const layoutFeatureKey = 'layout';
 
 export interface LayoutState {
-  view: boolean;
-  create: boolean;
+  mainContainer: SideNavButtons;
+  sidenav: boolean;
+
 }
 
 export const initialState: LayoutState = {
-  view: true,
-  create: false
+  mainContainer: SideNavButtons.View,
+  sidenav: false
 };
 
 const layoutReducer = createReducer(
   initialState,
-  on(toggleViewAction, handleToggleView),
-  on(toggleCreateAction, handleToggleCreate)
+  on(toggleSidenavAction, handleToggleSidenav),
+  on(showMainContainerAction, showMainContainer)
 );
 
 export function reducer(state: LayoutState | undefined, action: Action) {
   return layoutReducer(state, action);
 }
 
-function handleToggleView(state: LayoutState, action): LayoutState {
+function showMainContainer(state: LayoutState, action): LayoutState {
   return {
     ...state,
-    create: false,
-    view: !state.view || true
+    sidenav: false,
+    mainContainer: action.containerType
   };
 }
 
-function handleToggleCreate(state: LayoutState, action): LayoutState {
+function handleToggleSidenav(state: LayoutState): LayoutState {
   return {
     ...state,
-    view: false,
-    create: !state.create || true
+    sidenav: !state.sidenav
   };
 }
 
@@ -45,7 +46,6 @@ export const selectLayout = (state: State) => state[layoutFeatureKey];
 
 export const layoutSelector = createSelector(selectLayout, (state) => state);
 
-export const getView = createSelector(layoutSelector, (state) => state.view);
+export const getSidenav = createSelector(layoutSelector, (state) => state.sidenav);
 
-export const getCreate = createSelector(layoutSelector, (state) => state.create);
-
+export const getMainContainer = createSelector(layoutSelector, (state) => state.mainContainer);

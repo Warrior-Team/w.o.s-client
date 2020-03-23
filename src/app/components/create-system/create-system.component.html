@@ -1,10 +1,12 @@
-<div class="col ctr container" >
+<div class="col ctr container">
   <span class="mat-title mat-primary">Add New System</span>
-  <form [formGroup]="form" class="col form" (ngSubmit)="onSubmit(form.value)">
+  <form [formGroup]="form" class="col form" (ngSubmit)="onSubmit()">
     <div class="col">
       <mat-form-field dir="rtl">
         <mat-label dir="rtl">מציאות</mat-label>
-        <mat-select class="mat-select" dir="rtl" formControlName="reality" required>
+        <mat-select class="mat-select" dir="rtl" formControlName="reality"
+                    (selectionChange)="realitySelectionChanged($event)"
+                    [value]="selectedReality">
           <mat-option class="mat-option" dir="rtl" *ngFor="let reality of realities" [value]="reality.warriorReality">
             {{reality.name}}
           </mat-option>
@@ -28,7 +30,8 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Server URL</mat-label>
-        <input matInput class="mat-input-element" placeholder="https://localhost:8080/health" formControlName="url" required>
+        <input matInput class="mat-input-element" placeholder="https://localhost:8080/health" formControlName="url"
+               required>
         <span matSuffix class="mat-icon fas fa-code"></span>
       </mat-form-field>
       <mat-form-field appearance="outline">

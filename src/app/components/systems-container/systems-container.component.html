@@ -1,0 +1,12 @@
+<div class="system-container row">
+  <ng-container *ngIf="shouldAddBadge; else withoutBadge">
+    <app-system-card *ngFor="let system of systems  | sort:['system','name']" class="shake"
+                     matBadge appBadgeIcon [matBadgeIconClass]="iconClass" [matBadgeColor]="badgeColor"
+                     (badgeClicked)="handleBadgeClicked(system.system)"
+                     [systemWithStat]="system"></app-system-card>
+  </ng-container>
+  <ng-template #withoutBadge>
+    <app-system-card *ngFor="let system of systems  | sort:['system','name']"
+                     [systemWithStat]="system"></app-system-card>
+  </ng-template>
+</div>

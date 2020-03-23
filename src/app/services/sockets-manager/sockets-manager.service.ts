@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {WebSocketSubject} from 'rxjs/internal-compatibility';
-import {filter} from 'rxjs/operators';
+import {delay, filter, retryWhen} from 'rxjs/operators';
+import {webSocket} from 'rxjs/webSocket';
 import {updateSystemsAction} from '../../actions/system.actions';
 import {System} from '../../models/system';
 import {State} from '../../reducers';
@@ -19,13 +20,15 @@ export interface Message {
 @Injectable()
 export class SocketsManagerService {
   private sockets: WebSocketSubject<any>;
+  private RETRY_SECONDS = 2;
 
   constructor(private pushNotificationsService: PushNotificationsService,
               private stateStore: Store<State>) {
   }
 
   init() {
-    this.sockets = new WebSocketSubject('ws://localhost:9090');
+    this.sockets = webSocket('ws://localhost:9090');
+    this.sockets.pipe(retryWhen((errors) => errors.pipe(delay(this.RETRY_SECONDS))));
     this.sockets
       .pipe(filter((message: Message) => message.type === 'notification'))
       .subscribe((message: Message) => {

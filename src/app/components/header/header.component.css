@@ -4,6 +4,8 @@
   background-image: linear-gradient(pink, #c09096);
   height: 20vh;
   width: 100vw;
+  box-shadow: 0 -2px 8px black;
+  z-index: 2;
 }
 
 .header-title {

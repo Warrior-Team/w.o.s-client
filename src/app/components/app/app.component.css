@@ -5,10 +5,6 @@
   position: relative;
 }
 
-app-system-card {
-  margin: 5px;
-}
-
 .container {
   display: flex;
   flex-direction: row;
@@ -16,13 +12,18 @@ app-system-card {
   max-width: 100vw;
 }
 
-.system-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: stretch;
-  align-items: flex-start;
-  max-width: 80vw;
+.mat-list-item {
+  position: relative;
+}
+
+.nav-icon {
+  position: absolute;
+  right: 10%;
+}
+
+.nav-text {
+  position: absolute;
+  left: 10%;
 }
 
 .example-sidenav-container {
@@ -30,6 +31,11 @@ app-system-card {
   height: 80vh;
 }
 
-mat-sidenav-content {
-  background-color: #ffe3df;
+.sidenav {
+  border-bottom-right-radius: 5px;
+  width: 10vw;
+}
+
+.fa-bars {
+  font-size: 1.4em;
 }

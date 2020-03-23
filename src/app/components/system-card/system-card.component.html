@@ -1,7 +1,7 @@
 <mat-card class="mat-card col"
           [ngClass]="{'card-alive':system.isAlive, 'card-dead':!system.isAlive}">
   <mat-card-header class="mat-card-header">
-    <span mat-card-avatar class="{{system.icon}} icon"></span>
+    <span mat-card-avatar class="mat-icon {{system.icon}} icon"></span>
     <mat-card-title class="mat-card-title" (click)="click()">{{system.name}}</mat-card-title>
     <mat-card-subtitle class="mat-card-subtitle">{{system.team}}</mat-card-subtitle>
   </mat-card-header>

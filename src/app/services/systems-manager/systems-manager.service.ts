@@ -1,7 +1,7 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {take} from 'rxjs/operators';
+import {mergeMap, take} from 'rxjs/operators';
 import {loadStats} from '../../actions/stats.actions';
 import {loadSystemsAction} from '../../actions/system.actions';
 import {System, SystemStat} from '../../models/system';
@@ -36,13 +36,29 @@ export class SystemsManagerService {
   }
 
   addSystem(systemToAdd: System, reality: number) {
-    this.httpClient.put('http://localhost:8080/systems', {system: systemToAdd}, {
+    return this.httpClient.put('http://localhost:8080/systems', {system: systemToAdd}, {
       headers: {reality: reality.toString()},
       withCredentials: false
-    }).subscribe((system: System) => {
-        console.log('Success');
-      }
-    );
+    });
+  }
+
+  updateSystem(systemToUpdate: System, reality: number) {
+    return this.httpClient.post('http://localhost:8080/systems/update', {system: systemToUpdate}, {
+      headers: {reality: reality.toString()},
+      withCredentials: false
+    });
+  }
+
+  removeSystem(systemToRemove: System) {
+    const selectedReality = this.stateStore.pipe(select(getSelectedReality));
+    return selectedReality.pipe(mergeMap((reality: number) => {
+      const httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json', reality: reality.toString()}),
+        body: {system: systemToRemove},
+        withCredentials: false
+      };
+      return this.httpClient.delete('http://localhost:8080/systems', httpOptions);
+    }));
   }
 }
 
