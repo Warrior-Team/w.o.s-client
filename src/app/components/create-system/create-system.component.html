@@ -1,0 +1,45 @@
+<div class="col ctr container">
+  <span class="mat-title mat-primary">Add New System</span>
+  <form [formGroup]="form" class="col form" (ngSubmit)="onSubmit()">
+    <div class="col">
+      <mat-form-field dir="rtl">
+        <mat-label dir="rtl">מציאות</mat-label>
+        <mat-select class="mat-select" dir="rtl" formControlName="reality"
+                    (selectionChange)="realitySelectionChanged($event)"
+                    [value]="selectedReality">
+          <mat-option class="mat-option" dir="rtl" *ngFor="let reality of realities" [value]="reality.warriorReality">
+            {{reality.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>System Name</mat-label>
+        <input matInput class="mat-input-element" placeholder="Maagar name" formControlName="name" required>
+        <span matSuffix class="mat-icon fas fa-signature"></span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Team Name</mat-label>
+        <input matInput class="mat-input-element" placeholder="Team Name" formControlName="team" required>
+        <span matSuffix class="mat-icon fas fa-i-cursor"></span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Details</mat-label>
+        <textarea matInput class="mat-input-element" placeholder="Add details about this maagar" required
+                  formControlName="details"></textarea>
+        <span matSuffix class="mat-icon fas fa-i-cursor"></span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Server URL</mat-label>
+        <input matInput class="mat-input-element" placeholder="https://localhost:8080/health" formControlName="url"
+               required>
+        <span matSuffix class="mat-icon fas fa-code"></span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Icon Class</mat-label>
+        <input matInput class="mat-input-element" placeholder="fas fa-fire" formControlName="icon" required>
+        <span matSuffix class="mat-icon fas fa-icons"></span>
+      </mat-form-field>
+    </div>
+    <button type="submit" mat-raised-button color="accent">SEND</button>
+  </form>
+</div>

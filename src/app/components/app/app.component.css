@@ -1,49 +1,41 @@
-.app-root{
+.app-root {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
-app-system-card {
-  margin: 5px;
-}
-
-.system-container {
+.container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
-  max-width: 80vw;
+  max-width: 100vw;
 }
 
-.header {
-  background-color: pink;
-  background-image: linear-gradient(pink, #c09096);
-  height: 20vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.mat-list-item {
+  position: relative;
+}
+
+.nav-icon {
+  position: absolute;
+  right: 10%;
+}
+
+.nav-text {
+  position: absolute;
+  left: 10%;
+}
+
+.example-sidenav-container {
   width: 100vw;
+  height: 80vh;
 }
 
-.header-title {
-  font-size: 3rem;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  height: 10vh;
+.sidenav {
+  border-bottom-right-radius: 5px;
+  width: 10vw;
 }
 
-.header-second-title {
-  font-size: 1em;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 10vh;
-}
-
-app-my-line-chart {
-  max-width: 80vw;
-  max-height: 10vh
+.fa-bars {
+  font-size: 1.4em;
 }

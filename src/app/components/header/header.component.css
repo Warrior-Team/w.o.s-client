@@ -1,0 +1,26 @@
+.header {
+  position: relative;
+  background-color: pink;
+  background-image: linear-gradient(pink, #c09096);
+  height: 20vh;
+  width: 100vw;
+  box-shadow: 0 -2px 8px black;
+  z-index: 2;
+}
+
+.header-title {
+  font-size: 3em;
+  align-items: flex-end;
+  height: 10vh;
+}
+
+.header-second-title {
+  font-size: 1em;
+  height: 10vh;
+}
+
+.side-button {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}

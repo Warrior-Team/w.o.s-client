@@ -8,7 +8,30 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 10px;
+  font-size: 1vmin;
   color: #333;
   background-color: #ffe3df;
+}
+
+mat-sidenav-content {
+  background-color: #ffe3df;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row.ctr, .col.ctr {
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-badge-content {
+  pointer-events: all;
 }

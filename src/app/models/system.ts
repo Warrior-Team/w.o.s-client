@@ -4,6 +4,7 @@ export interface System {
   team: string;
   icon: string;
   details: string;
+  url: string;
   isAlive: boolean;
   lastAlive: string;
   isGraphOpen?: boolean;

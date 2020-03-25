@@ -42,7 +42,6 @@ export class SystemCardComponent implements OnChanges {
   }
 
   click() {
-    console.log('clicked');
     this.httpClient.post('http://localhost:8080/systems/message', {data: 'hello'}, {withCredentials: false})
       .subscribe((d: { data: string }) => {
         this.clickEmitter.emit(d.data);

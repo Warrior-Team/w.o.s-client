@@ -40,7 +40,7 @@ export class PushNotificationsService {
         });
       };
       notify.onclick = (e) => {
-        alert('Hello');
+        window.focus();
         return obs.next({
           notification: notify,
           event: e

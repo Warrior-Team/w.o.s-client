@@ -1,25 +1,24 @@
-<mat-card class="example-card" [ngClass]="{'example-card-alive':system.isAlive, 'example-card-dead':!system.isAlive}">
-  <mat-card-header>
-    <span mat-card-avatar class="{{system.icon}} icon"></span>
-    <!--    <div mat-card-avatar style="background-size: cover" [style.background-image]="'url(https://material.angular.io/assets/img/examples/shiba1.jpg)'"></div>-->
-    <mat-card-title (click)="click()">{{system.name}}</mat-card-title>
-    <mat-card-subtitle>{{system.team}}</mat-card-subtitle>
+<mat-card class="mat-card col"
+          [ngClass]="{'card-alive':system.isAlive, 'card-dead':!system.isAlive}">
+  <mat-card-header class="mat-card-header">
+    <span mat-card-avatar class="mat-icon {{system.icon}} icon"></span>
+    <mat-card-title class="mat-card-title" (click)="click()">{{system.name}}</mat-card-title>
+    <mat-card-subtitle class="mat-card-subtitle">{{system.team}}</mat-card-subtitle>
   </mat-card-header>
   <div *ngIf="system.isGraphOpen">
     <app-my-line-chart [data]="data" [labels]="labels" [labelGraph]="'duration in ms'"></app-my-line-chart>
   </div>
-  <!--    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">-->
-  <mat-card-content style="display: flex; flex-direction: column">
-   <span>
-     {{system.details}}
-   </span>
-    <span *ngIf="!system.isAlive">Been down since {{system.lastAlive}}</span>
-    <span> Meaning been down since
-      <span *ngIf="!system.isAlive" style="color:red; font-size: 1.2em"> {{system.lastAlive | dateToPretty}}</span>
-    </span>
+  <mat-card-content class=" mat-card-content ">
+    <span>{{system.details}}</span>
+    <ng-container *ngIf="!system.isAlive">
+      <div>Been down since {{system.lastAlive}}</div>
+      <span> Meaning been down since
+          <span class="down"> {{system.lastAlive | dateToPretty}}</span>
+        </span>
+    </ng-container>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button (click)="handleToggleGraph()">GRAPH</button>
+    <button class="mat-button" mat-button>LIKE</button>
+    <button class="mat-button" mat-button (click)="handleToggleGraph()">GRAPH</button>
   </mat-card-actions>
 </mat-card>

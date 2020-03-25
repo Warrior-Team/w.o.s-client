@@ -1,0 +1,12 @@
+.container {
+  font-size: 2vmin;
+  width: 30vw;
+  background-color: white;
+  border: 1px lightgray solid;
+  border-radius: 5px;
+}
+
+.form {
+  align-self: stretch;
+  padding: 5px;
+}

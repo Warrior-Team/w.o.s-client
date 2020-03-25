@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Store} from '@ngrx/store';
+import {Injectable} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {combineLatest} from 'rxjs';
 import {loadRealitiesAction} from '../../actions/realities.actions';
 import {State} from '../../reducers';
-import {loadSystemsAction} from '../../actions/system.actions';
-import {System} from '../../models/system';
-import {Reality} from '../../reducers/realities/realities.reducer';
+import {getRealities, getSelectedReality, Reality} from '../../reducers/realities/realities.reducer';
 
 @Injectable({providedIn: 'root'})
 export class RealitiesManagerService {
+  selectedReality: Reality;
 
   constructor(private httpClient: HttpClient,
               private stateStore: Store<State>) {
@@ -19,5 +19,14 @@ export class RealitiesManagerService {
       .subscribe((realities: Reality[]) => {
         this.stateStore.dispatch(loadRealitiesAction({realities}));
       });
+    const realities$ = this.stateStore.pipe(select(getRealities));
+    const selectedReality$ = this.stateStore.pipe(select(getSelectedReality));
+    combineLatest([realities$, selectedReality$]).subscribe(([allRealities, selectedReality]) => {
+      this.selectedReality = allRealities.find(real => real.warriorReality === selectedReality);
+    });
+  }
+
+  getSelectedReality() {
+    return this.selectedReality;
   }
 }

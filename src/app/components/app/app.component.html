@@ -1,22 +1,48 @@
 <div class="app-root">
-  <div class="header">
-    <span class="header-title">Wall of Shame</span>
-    <span class="header-second-title">Developed by WarriorTeam</span>
-    <mat-form-field dir="rtl">
-      <mat-label dir="rtl">מציאות</mat-label>
-      <mat-select dir="rtl" [formControl]="realitiesForm" (selectionChange)="realitySelectionChanged($event)">
-        <mat-select-trigger>
-          {{realitiesForm.value?.name}}
-        </mat-select-trigger>
-        <mat-option dir="rtl" *ngFor="let reality of realities | async" [value]="reality">
-          {{reality.name}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  <div class="system-container">
-    <app-system-card *ngFor="let system of (systemWithStats | async) | sort:['system','name']"
-                     [systemWithStat]="system"
-                     (clickEmitter)="notify($event, system.name)"></app-system-card>
-  </div>
+  <app-header>
+    <div realities>
+      <mat-form-field dir="rtl">
+        <mat-label dir="rtl">מציאות</mat-label>
+        <mat-select class="mat-select" dir="rtl"
+                    (selectionChange)="realitySelectionChanged($event)" [value]="selectedReality | async">
+          <mat-option class="mat-option" dir="rtl" *ngFor="let reality of realities | async"
+                      [value]="reality.warriorReality">
+            {{reality.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button side-button mat-icon-button (click)="toggleSidenav()" class="mat-icon-button button">
+      <span class="mat-icon fas fa-bars"></span>
+    </button>
+  </app-header>
+  <mat-sidenav-container class="example-sidenav-container row ctr" [hasBackdrop]="true">
+    <mat-sidenav class="sidenav" mode="over" [fixedInViewport]="false" [opened]="sidenav$ | async">
+      <mat-nav-list class="mat-nav-list">
+        <a *ngFor="let nav of fillerNav" mat-list-item (click)="optionClicked(nav.name)" class="mat-list-item ">
+          <span class="nav-text">{{nav.name}}</span>
+          <span class="nav-icon mat-icon {{nav.icon}}"></span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="container">
+      <ng-container [ngSwitch]="mainContainer$ | async">
+        <app-systems-container *ngSwitchCase="sideNavButtons.View"
+                               [systems]="systemWithStats | async"></app-systems-container>
+        <app-create-system *ngSwitchCase="sideNavButtons.Create" [realities]="realities| async"
+                           (sendEmitter)="addSystem($event)"></app-create-system>
+        <app-systems-container *ngSwitchCase="sideNavButtons.Remove"
+                               [systems]="systemWithStats | async"
+                               [shouldAddBadge]="true" [iconClass]="'fas fa-times'"
+                               [badgeColor]="'accent'"
+                               (iconClickedEmitter)="handleSystemAction($event, sideNavButtons.Remove)"></app-systems-container>
+        <app-systems-container *ngSwitchCase="sideNavButtons.Update"
+                               [systems]="systemWithStats | async"
+                               [shouldAddBadge]="true" [iconClass]="'fas fa-pen-fancy'"
+                               [badgeColor]="'accent'"
+                               (iconClickedEmitter)="handleSystemAction($event, sideNavButtons.Update)"></app-systems-container>
+      </ng-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
