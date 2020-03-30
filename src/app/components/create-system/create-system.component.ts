@@ -12,12 +12,12 @@ import {Reality} from '../../reducers/realities/realities.reducer';
 export class CreateSystemComponent implements OnInit {
   @Input() realities: Reality[];
   @Input() form?: FormGroup;
-  @Output() sendEmitter: EventEmitter<{ system: System, reality: number }>;
+  @Output() sendEmitter: EventEmitter<{ system: System, realityShallow: number }>;
 
   selectedReality;
 
   constructor(private formBuilder: FormBuilder) {
-    this.sendEmitter = new EventEmitter<{ system: System, reality: number }>();
+    this.sendEmitter = new EventEmitter<{ system: System, realityShallow: number }>();
   }
 
   ngOnInit(): void {
@@ -39,7 +39,7 @@ export class CreateSystemComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const formValue = this.form.value;
-      this.sendEmitter.emit({system: formValue, reality: formValue.reality});
+      this.sendEmitter.emit({system: formValue, realityShallow: formValue.reality});
       this.form = new FormGroup({});
     }
   }
