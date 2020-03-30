@@ -35,6 +35,10 @@ import {PushNotificationsService} from './services/push-notifications/push-notif
 import {RealitiesManagerService} from './services/realities-manager/realities-manager.service';
 import {SocketsManagerService} from './services/sockets-manager/sockets-manager.service';
 import {SystemsManagerService} from './services/systems-manager/systems-manager.service';
+import { GraphQLModule } from './graphql.module';
+import { APOLLO_OPTIONS } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
 @NgModule({
@@ -78,9 +82,22 @@ import {SystemsManagerService} from './services/systems-manager/systems-manager.
     FormsModule,
     MatSnackBarModule,
     MatBadgeModule,
-    MatDialogModule
+    MatDialogModule,
+    GraphQLModule
   ],
-  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService, MatSnackBar, MatDialog],
+  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService, MatSnackBar, MatDialog,{
+    provide: APOLLO_OPTIONS,
+    useFactory: (httpLink: HttpLink) => {
+      return {
+        cache: new InMemoryCache(),
+        link: httpLink.create({
+          uri: "http://localhost:3333/graphql"
+        })
+      }
+    },
+    deps: [HttpLink]
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule {
