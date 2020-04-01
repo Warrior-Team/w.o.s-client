@@ -1,16 +1,13 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {take, map, pluck, mergeMap} from 'rxjs/operators';
+import {take, pluck, mergeMap} from 'rxjs/operators';
 import {loadStats} from '../../actions/stats.actions';
 import {System, SystemStat} from '../../models/system';
 import {State} from '../../reducers';
-import {getSelectedReality, selectRealities} from '../../reducers/realities/realities.reducer';
-import gql from "graphql-tag";
+import {getSelectedReality} from '../../reducers/realities/realities.reducer';
 import { Apollo } from 'apollo-angular';
-import { Subscription } from 'rxjs';
-import { getSystemsStats } from 'src/app/reducers/stats/stats.reducer';
 import { loadSystemsAction } from 'src/app/actions/system.actions';
+import * as queries from '../../queries/index';
 
 @Injectable({providedIn: 'root'})
 export class SystemsManagerService {
@@ -21,15 +18,7 @@ export class SystemsManagerService {
   init() {
     const selectedReality = this.stateStore.pipe(select(getSelectedReality));
     selectedReality.subscribe((reality) => {
-      this.apollo.query({query: gql ` query getSystems { getSystems(reality:${reality}) {
-        id
-        name
-        team
-        details
-        icon
-        isAlive
-        lastAlive
-      }}`}).pipe(pluck("data", "getSystems")).subscribe((systems: System[]) => {
+      this.apollo.query({query: queries.getSystems, variables: {reality}}).pipe(pluck("data", "getSystems")).subscribe((systems: System[]) => {
          this.stateStore.dispatch(loadSystemsAction({systems}));});
     });
   }
@@ -40,16 +29,7 @@ export class SystemsManagerService {
       {
       this.apollo.
         query({
-          query: gql`
-          query getStats($reality: Int, $serverId: Int) {
-            getStats(statsInfoInput:{reality:$reality, serverId:$serverId}){
-              serverId
-              stats{
-                duration_ms
-                request_time
-              }
-          }}
-          `, variables: {reality, serverId}
+          query: queries.getStats, variables: {reality, serverId}
         }).pipe(pluck("data", "getStats")).subscribe((result: SystemStat) => 
             this.stateStore.dispatch(loadStats({stats: result}))
       );
@@ -58,34 +38,12 @@ export class SystemsManagerService {
 
   addSystem(systemToAdd: System, reality: number) {
       return this.apollo.
-        mutate({mutation: gql ` mutation addSystem($reality: Int, $systemToAdd: systemInput) {
-          addSystem(reality:$reality, data: $systemToAdd)
-          {
-            id
-            name
-            team
-            details
-            icon
-            isAlive
-            lastAlive
-          }
-        }`, variables: {reality, systemToAdd}}).pipe(pluck("data", "addSystem"));
+        mutate({mutation: queries.addSystem, variables: {reality, systemToAdd}}).pipe(pluck("data", "addSystem"));
   }
 
   updateSystem(systemToUpdate: System, reality: number) {
     return this.apollo.
-    mutate({mutation: gql ` mutation updateSystem($reality: Int, $systemToUpdate: systemInput) {
-      updateSystem(reality:$reality, data: $systemToUpdate)
-      {
-        id
-        name
-        team
-        details
-        icon
-        isAlive
-        lastAlive
-      }
-    }`, variables: {reality, systemToUpdate}}).pipe(pluck("data", "updateSystem"));
+    mutate({mutation: queries.updateSystem, variables: {reality, systemToUpdate}}).pipe(pluck("data", "updateSystem"));
   }
 
   removeSystem(systemToRemove: System) {
@@ -94,11 +52,7 @@ export class SystemsManagerService {
     return selectedReality.pipe(mergeMap((reality: number) => {
       return this.apollo.
       mutate({
-        mutation: gql`
-          mutation removeSystem ($reality: Int, $id: Int) {
-            removeSystem(reality:$reality, id: $id)
-          }
-        `,  variables: {reality, id: systemToRemove.id}
+        mutation: queries.removeSystem,  variables: {reality, id: systemToRemove.id}
       }).pipe(pluck("data", "removeSystem"));
     }));
   }

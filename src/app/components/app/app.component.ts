@@ -104,10 +104,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addSystem(event: { system: any, realityShallow: number }) {
-    const {realityShallow, system} = event;
-    const {reality, ...restOfSystem} = system;
-    this.systemsManagerService.addSystem(restOfSystem, realityShallow)
+  addSystem(event: { system: System, reality: number }) {
+    this.systemsManagerService.addSystem(event.system, event.reality)
       .subscribe(() => {
         this.matSnackBar.open('System added successfully', 'Hurray!', {duration: 2000});
       });

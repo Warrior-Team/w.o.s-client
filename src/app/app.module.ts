@@ -85,18 +85,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
     MatDialogModule,
     GraphQLModule
   ],
-  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService, MatSnackBar, MatDialog,{
-    provide: APOLLO_OPTIONS,
-    useFactory: (httpLink: HttpLink) => {
-      return {
-        cache: new InMemoryCache(),
-        link: httpLink.create({
-          uri: "http://localhost:3333/graphql"
-        })
-      }
-    },
-    deps: [HttpLink]
-  }
+  providers: [PushNotificationsService, SystemsManagerService, RealitiesManagerService, SocketsManagerService, MatSnackBar, MatDialog
 ],
   bootstrap: [AppComponent]
 })
