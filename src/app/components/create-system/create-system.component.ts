@@ -39,7 +39,6 @@ export class CreateSystemComponent implements OnInit {
   onSubmit() {
     if (this.form.valid) {
       const {reality, ...restOfSystem} = this.form.value;
-      // const formValue = this.form.value;
       this.sendEmitter.emit({system: restOfSystem, reality});
       this.form = new FormGroup({});
     }
